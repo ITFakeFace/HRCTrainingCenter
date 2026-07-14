@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React from "react";
-import LogoCropped from "@/assets/LogoCropped.jpg";
+import LogoCropped from "@/assets/images/logo/LogoCropped.jpg";
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const alertTrigger = (name: string) => {
     alert(name);
