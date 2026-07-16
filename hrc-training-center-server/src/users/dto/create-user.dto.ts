@@ -1,5 +1,6 @@
 import { Gender } from '@prisma/client';
 import {
+  IsArray,
   IsBoolean,
   IsDate,
   IsDateString,
@@ -35,4 +36,8 @@ export class CreateUserDto {
   @IsDateString()
   @IsOptional()
   dob?: Date;
+
+  @IsArray()
+  @IsOptional()
+  roles?: number[];
 }

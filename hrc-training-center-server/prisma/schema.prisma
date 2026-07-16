@@ -79,9 +79,9 @@ model RefreshToken {
 }
 
 model Course {
-  id           Int       @id @default(autoincrement())
-  code         String    @unique
-  slug         String    @unique
+  id           Int          @id @default(autoincrement())
+  code         String       @unique
+  slug         String       @unique
   name         String
   description  String?
   duration     String
@@ -95,16 +95,30 @@ model Course {
   materials    Json
   contents     Json
   instructors  Json
-  price        Decimal   @db.Decimal(12, 2)
-  minSize      Int       @default(0)
+  price        Decimal      @db.Decimal(12, 2)
+  minSize      Int          @default(0)
   maxSize      Int?
-  totalLessons Int       @default(0)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  totalLessons Int          @default(0)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   batches      Batch[]
   sessions     Session[]
+  status       CourseStatus @default(ACTIVE)
+  category     Category[]   @relation()
 
   @@map("courses")
+}
+
+model Category {
+  id          Int            @id @default(autoincrement())
+  name        String         @unique
+  description String?
+  status      CategoryStatus @default(ACTIVE)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  courses     Course[]
+
+  @@map("categories")
 }
 
 model Session {
@@ -261,6 +275,17 @@ enum EnrollmentStatus {
   ONGOING
   COMPLETED
   PENDING
+}
+
+enum CourseStatus {
+  ACTIVE
+  ARCHIVED
+  INACTIVE
+}
+
+enum CategoryStatus {
+  ACTIVE
+  INACTIVE
 }
 
 enum BatchType {

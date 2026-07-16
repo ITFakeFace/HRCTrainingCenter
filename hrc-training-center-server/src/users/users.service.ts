@@ -20,6 +20,9 @@ export class UsersService {
         avatar: createUserDto.avatar,
         gender: createUserDto.gender,
         dob: createUserDto.dob,
+        roles: {
+          connect: createUserDto.roles?.map((roleId) => ({ id: roleId })) || [],
+        },
       },
     });
     const { password, ...userWithoutPassword } = data;
@@ -47,8 +50,6 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    console.log('Updating user with ID:', id);
-    console.log('updateUserDto:', updateUserDto); // Log the received DTO for debugging
     let model = { ...updateUserDto };
 
     if (updateUserDto.password) {
@@ -59,7 +60,30 @@ export class UsersService {
 
     const data = await this.prisma.client.user.update({
       where: { id: id },
-      data: model,
+      data: {
+        pID: model.pID,
+        fullname: model.fullname,
+        email: model.email,
+        phone: model.phone,
+        password: model.password,
+        avatar: model.avatar,
+        gender: model.gender,
+        dob: model.dob,
+        roles: {
+          connect: model.roles?.map((roleId) => ({ id: roleId })) || [],
+        },
+      },
+      include: {
+        roles: {
+          select: {
+            id: true,
+            shortname: true,
+            fullname: true,
+            level: true,
+            permissions: true,
+          },
+        }, // Include roles in the response
+      },
     });
     const { password, ...userWithoutPassword } = data;
     return userWithoutPassword;

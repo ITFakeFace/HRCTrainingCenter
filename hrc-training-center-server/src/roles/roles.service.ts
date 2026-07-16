@@ -22,6 +22,10 @@ export class RolesService {
           })),
         },
       },
+      include: {
+        permissions: true,
+        parentRoles: true,
+      },
     });
   }
 
@@ -48,6 +52,10 @@ export class RolesService {
             id: permissionId,
           })),
         },
+      },
+      include: {
+        permissions: true,
+        parentRoles: true,
       },
     });
   }

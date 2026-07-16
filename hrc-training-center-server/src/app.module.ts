@@ -10,15 +10,25 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
+import { PolicyGuard } from './auth/guards/policy.guard';
+import { CoursesModule } from './courses/courses.module';
+import { SessionsModule } from './sessions/sessions.module';
+import { BatchesModule } from './batches/batches.module';
+import { LessonsModule } from './lessons/lessons.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
-  imports: [AuthModule, PrismaModule, UsersModule, SystemTestModule, RolesModule, PermissionsModule],
+  imports: [AuthModule, PrismaModule, UsersModule, SystemTestModule, RolesModule, PermissionsModule, CoursesModule, SessionsModule, BatchesModule, LessonsModule, CategoriesModule],
   controllers: [AppController],
   providers: [
     AppService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PolicyGuard,
     },
   ],
 })

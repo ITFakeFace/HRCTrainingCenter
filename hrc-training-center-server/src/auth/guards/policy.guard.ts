@@ -23,6 +23,8 @@ export class PolicyGuard implements CanActivate {
       return true;
     }
 
+    console.log('PolicyGuard: policy =', policy);
+
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 

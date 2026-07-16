@@ -11,12 +11,16 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { RequirePolicy } from '@/auth/decorator/require-policy.decorator';
 
 @Controller('/api/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @RequirePolicy({permissions: [
+    ["USER_CREATE"]
+  ]})
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
